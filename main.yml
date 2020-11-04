@@ -1,0 +1,15 @@
+- hosts: all
+  handlers:
+  - name: Redhat restart httpd
+    service:
+      name: httpd
+      state: restarted
+
+  - name: Ubuntu Restart Apache 
+    service:
+      name: apache2
+      state: started
+  
+  tasks:
+  - include_tasks: "{{ ansible_os_family }}-httpd.yml"
+

@@ -1,0 +1,30 @@
+- name: Install Httpd (RedHat)
+  yum:
+    name: httpd
+    state: latest
+
+- name: Start Httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  
+- name: Download Templates
+  get_url:
+    url: https://www.free-css.com/assets/files/free-css-templates/download/page1/modular-business.zip
+    dest: /var/www/html/
+
+- name: Install Unzip
+  yum:
+    name: unzip
+    state: latest
+
+- name: Unzip Files
+  unarchive:
+    src: /var/www/html/modular-business.zip
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Move Files
+  shell: rsync -r /var/www/html/modular-business/* /var/www/html/
+  notify: Redhat restart httpd
